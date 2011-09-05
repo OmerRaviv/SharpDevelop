@@ -239,13 +239,12 @@ namespace ICSharpCode.NRefactory.Tests.Ast
 			Assert.AreEqual("T", md.Templates[0].Name);
 			Assert.AreEqual(0, md.Templates[0].Bases.Count);
 		}
-		
-		[Test]
-		public void CSharpExtensionMethodTest()
+
+        [TestCase("public static int ToInt32(              this string s) { return int.Parse(s); }")]
+        [TestCase("public static int ToInt32([MyAttribute] this string s) { return int.Parse(s); }")]
+		public void CSharpExtensionMethodTest(string methodDeclaration)
 		{
-			MethodDeclaration md = ParseUtilCSharp.ParseTypeMember<MethodDeclaration>(
-				"public static int ToInt32(this string s) { return int.Parse(s); }"
-			);
+			MethodDeclaration md = ParseUtilCSharp.ParseTypeMember<MethodDeclaration>(methodDeclaration);
 			Assert.AreEqual("ToInt32", md.Name);
 			Assert.IsTrue(md.IsExtensionMethod);
 			Assert.AreEqual("s", md.Parameters[0].ParameterName);
